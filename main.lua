@@ -27,22 +27,24 @@ function love.load()
     objects.ground.shape = love.physics.newRectangleShape(objects.ground.body, 0, 0, 768, 80)
     objects.ground.shape:setData("ground")
 
-    objects.bug1 = Player(world)
+    objects.bug = Player(world)
     objects.bug2 = Player(world)
     objects.bug2.body:setX(640/3)
     
     love.graphics.setBackgroundColor(104, 136, 248)
     love.graphics.setMode(1024, 768, false, true, 0)
+    
+    text = ''
 end
 
 function love.update(dt)
     world:update(dt)
-    objects.bubble.body:applyForce(0,-15)
-    if objects.ball.inGround then
+--    objects.bubble.body:applyForce(0,-15)
+    if objects.bug.inGround then
         if love.keyboard.isDown(controls.right) then
-            objects.ball.body:applyForce(objects.ball.groundVelocity, 0)
+            objects.bug.body:applyForce(objects.bug.groundVelocity, 0)
         elseif love.keyboard.isDown(controls.left) then
-            objects.ball.body:applyForce(-objects.ball.groundVelocity, 0)
+            objects.bug.body:applyForce(-objects.bug.groundVelocity, 0)
         end
     end
 end
@@ -51,7 +53,7 @@ function love.draw()
     love.graphics.setColor(72, 160, 14)
     love.graphics.polygon("fill", objects.ground.shape:getPoints())
     
-    objects.bug1:draw()
+    objects.bug:draw()
     objects.bug2:draw()
     
     love.graphics.print(string.format("fps: %s", love.timer.getFPS()), 0, 0)
@@ -60,7 +62,7 @@ end
 
 function flap()
     local time = love.timer.getTime()
-    elapsedTime = time - objects.bug1.lastFlap
+    elapsedTime = time - objects.bug.lastFlap
 
     local upForce = 0
     for keyTime, force in pairs(conf.upForce) do
@@ -73,13 +75,13 @@ function flap()
 
     if upForce ~= 0 then
         if love.keyboard.isDown(controls.right) then
-            objects.bug1.body:applyForce(conf.sideForce, 0)
+            objects.bug.body:applyForce(conf.sideForce, 0)
         elseif love.keyboard.isDown(controls.left) then
-            objects.bug1.body:applyForce(-conf.sideForce, 0)
+            objects.bug.body:applyForce(-conf.sideForce, 0)
         end
 
-        objects.bug1.body:applyForce(0, upForce)
-        objects.bug1.lastFlap = time
+        objects.bug.body:applyForce(0, upForce)
+        objects.bug.lastFlap = time
     end
 end
 
@@ -93,8 +95,8 @@ function love.keypressed(k)
 end
 
 function add(a, b, coll)
-    if a == "ground" and b == "ball" then
-        objects.ball.inGround = true
+    if a == "ground" and b == "bug" then
+        objects.bug.inGround = true
         text = text.. "add " .. a .. " : " .. b .. "\n"
     end
 end
@@ -104,8 +106,8 @@ function persist(a, b, coll)
 end
 
 function rem(a, b, coll)
-    if a == "ground" and b == "ball" then
-        objects.ball.inGround = false
+    if a == "ground" and b == "bug" then
+        objects.bug.inGround = false
         text = text.. "rem " .. a .. " : " .. b .. "\n"
     end
 end
