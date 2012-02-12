@@ -1,12 +1,8 @@
-Player=require 'Player'
+Debug = require 'Debug'
+Player = require 'Player'
 
 conf = {}
 conf.gravity = 32
-conf.sideForce = 120
-conf.upForce = {}
-conf.upForce[0.1] = -200
-conf.upForce[0.4] = -500
-conf.upForce[0.7] = -700
 conf.meterScale = 200 -- 30 pixels = 1 meter
 
 controls = {}
@@ -34,7 +30,7 @@ function love.load()
     love.graphics.setBackgroundColor(104, 136, 248)
     love.graphics.setMode(1024, 768, false, true, 0)
     
-    text = ''
+    debug = Debug('info')
 end
 
 function love.update(dt)
@@ -57,7 +53,7 @@ function love.draw()
     objects.bug2:draw()
     
     love.graphics.print(string.format("fps: %s", love.timer.getFPS()), 0, 0)
-    love.graphics.print(text, 0, 15)
+    debug:draw()
 end
 
 function flap()
@@ -65,7 +61,7 @@ function flap()
     elapsedTime = time - objects.bug.lastFlap
 
     local upForce = 0
-    for keyTime, force in pairs(conf.upForce) do
+    for keyTime, force in pairs(objects.bug.upForce) do
         if elapsedTime > keyTime then
             upForce = force
         else
@@ -75,9 +71,9 @@ function flap()
 
     if upForce ~= 0 then
         if love.keyboard.isDown(controls.right) then
-            objects.bug.body:applyForce(conf.sideForce, 0)
+            objects.bug.body:applyForce(objects.bug.sideForce, 0)
         elseif love.keyboard.isDown(controls.left) then
-            objects.bug.body:applyForce(-conf.sideForce, 0)
+            objects.bug.body:applyForce(-objects.bug.sideForce, 0)
         end
 
         objects.bug.body:applyForce(0, upForce)
@@ -97,7 +93,7 @@ end
 function add(a, b, coll)
     if a == "ground" and b == "bug" then
         objects.bug.inGround = true
-        text = text.. "add " .. a .. " : " .. b .. "\n"
+        debug:info('add ' .. a .. ' : ' .. b)
     end
 end
 
@@ -108,7 +104,7 @@ end
 function rem(a, b, coll)
     if a == "ground" and b == "bug" then
         objects.bug.inGround = false
-        text = text.. "rem " .. a .. " : " .. b .. "\n"
+        debug:info('rem ' .. a .. ' : ' .. b)
     end
 end
 
