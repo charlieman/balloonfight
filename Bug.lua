@@ -8,6 +8,9 @@ local M=class(function(self, world)
   self.sprite=sprite
   self.points=0
   self.lastFlap=0
+  self.shape:setData('bug')
+  self.groundVelocity = 30
+  self.inGround = false
 end)
 
 function M:draw()
