@@ -1,12 +1,12 @@
 
 conf = {}
-conf.gravity = 320
-conf.sideForce = 1200
+conf.gravity = 32
+conf.sideForce = 120
 conf.upForce = {}
-conf.upForce[0.1] = -2000
-conf.upForce[0.4] = -5000
-conf.upForce[0.7] = -7000
-conf.meterScale = 30 -- 30 pixels = 1 meter
+conf.upForce[0.1] = -200
+conf.upForce[0.4] = -500
+conf.upForce[0.7] = -700
+conf.meterScale = 200 -- 30 pixels = 1 meter
 
 controls = {}
 controls.flap = 'z'
@@ -14,7 +14,7 @@ controls.left = 'left'
 controls.right = 'right'
 
 function love.load()
-    world = love.physics.newWorld(0, 0, 640, 480)
+    world = love.physics.newWorld(0, 0, 1024, 768)
     world:setGravity(0, conf.gravity)
     world:setMeter(conf.meterScale) -- default
     world:setCallbacks(add, persist, rem, result)
@@ -22,33 +22,34 @@ function love.load()
     objects = {}
 
     objects.ground = {}
-    objects.ground.body = love.physics.newBody(world, 640/2, 440, 0, 0)
-    objects.ground.shape = love.physics.newRectangleShape(objects.ground.body, 0, 0, 480, 80)
+    objects.ground.body = love.physics.newBody(world, 1024/2, 768, 0, 0)
+    objects.ground.shape = love.physics.newRectangleShape(objects.ground.body, 0, 0, 768, 80)
     objects.ground.shape:setData("ground")
 
     objects.ball = {}
-    objects.ball.body = love.physics.newBody(world, 640/2, 480/2, 15, 0)
-    objects.ball.shape = love.physics.newCircleShape(objects.ball.body, 0, 0, 20)
+    objects.ball.body = love.physics.newBody(world, 1024/2, 768/2, 15, 0)
+    objects.ball.shape = love.physics.newCircleShape(objects.ball.body, 0, 0, 20.5)
     objects.ball.lastFlap = 0
     objects.ball.shape:setData("ball")
-    objects.ball.groundVelocity = 300
+    objects.ball.groundVelocity = 30
     objects.ball.inGround = false
 
     objects.bubble = {}
-    objects.bubble.body = love.physics.newBody(world, 640/2, 480/2, 0, 0)
+    objects.bubble.body = love.physics.newBody(world, 1024/2, 768/2, 0.1, 0)
     objects.bubble.shape = love.physics.newCircleShape(objects.ball.body, 0, 0, 20)
     objects.bubble.shape:setData("bubble")
 
     elapsedTime = 0
     text = ""
 
+
     love.graphics.setBackgroundColor(104, 136, 248)
-    love.graphics.setMode(640, 480, false, true, 0)
+    love.graphics.setMode(1024, 768, false, true, 0)
 end
 
 function love.update(dt)
     world:update(dt)
-    objects.bubble.body:applyForce(0,-1500)
+    objects.bubble.body:applyForce(0,-15)
     if objects.ball.inGround then
         if love.keyboard.isDown(controls.right) then
             objects.ball.body:applyForce(objects.ball.groundVelocity, 0)
