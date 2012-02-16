@@ -19,10 +19,11 @@ function love.load()
 
     objects = {}
 
-    objects.ground = {}
-    table.insert(objects.ground, Platform(world, 150, 560, 300, 60))
-    table.insert(objects.ground, Platform(world, 1024-150, 550, 300, 60))
-    table.insert(objects.ground, Platform(world, 512, 400, 300, 20))
+    objects.ground = {
+        Platform(world, 150, 560, 300, 60),
+        Platform(world, 1024-150, 550, 300, 60),
+        Platform(world, 512, 400, 300, 20),
+    }
 
     objects.bug = Player(world)
     objects.bug2 = Player(world)
