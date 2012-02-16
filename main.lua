@@ -12,24 +12,24 @@ controls.left = 'left'
 controls.right = 'right'
 
 function love.load()
-    world = love.physics.newWorld(0, 0, 1024, 768)
+    world = love.physics.newWorld(0, 0, 1024, 600)
     world:setGravity(0, conf.gravity)
     world:setMeter(conf.meterScale) -- default
     world:setCallbacks(add, persist, rem, result)
 
     objects = {}
 
-    objects.ground = Platform(world, 1024/2, 600, 600, 80)
-    objects.ground = Platform(world, 150, 540, 300, 60)
-    
-    objects.ground2 = Platform(world, 1024-150, 540, 300, 80)
+    objects.ground = {}
+    table.insert(objects.ground, Platform(world, 150, 560, 300, 60))
+    table.insert(objects.ground, Platform(world, 1024-150, 550, 300, 60))
+    table.insert(objects.ground, Platform(world, 512, 400, 300, 20))
 
     objects.bug = Player(world)
     objects.bug2 = Player(world)
     objects.bug2.body:setX(640/3)
     
     love.graphics.setBackgroundColor(104, 136, 248)
-    love.graphics.setMode(1024, 768, false, true, 0)
+    --love.graphics.setMode(1024, 768, false, true, 0)
     
     debug = Debug('info')
 end
@@ -47,8 +47,9 @@ function love.update(dt)
 end
 
 function love.draw()
-    objects.ground:draw()
-    objects.ground2:draw()
+    for i, g in pairs(objects.ground) do
+        g:draw()
+    end
     
     objects.bug:draw()
     objects.bug2:draw()
