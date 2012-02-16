@@ -1,5 +1,6 @@
 Debug = require 'Debug'
 Player = require 'Player'
+Platform = require 'Platform'
 
 conf = {}
 conf.gravity = 32
@@ -18,10 +19,10 @@ function love.load()
 
     objects = {}
 
-    objects.ground = {}
-    objects.ground.body = love.physics.newBody(world, 1024/2, 768, 0, 0)
-    objects.ground.shape = love.physics.newRectangleShape(objects.ground.body, 0, 0, 768, 80)
-    objects.ground.shape:setData("ground")
+    objects.ground = Platform(world, 1024/2, 600, 600, 80)
+    objects.ground = Platform(world, 150, 540, 300, 60)
+    
+    objects.ground2 = Platform(world, 1024-150, 540, 300, 80)
 
     objects.bug = Player(world)
     objects.bug2 = Player(world)
@@ -46,8 +47,8 @@ function love.update(dt)
 end
 
 function love.draw()
-    love.graphics.setColor(72, 160, 14)
-    love.graphics.polygon("fill", objects.ground.shape:getPoints())
+    objects.ground:draw()
+    objects.ground2:draw()
     
     objects.bug:draw()
     objects.bug2:draw()
@@ -91,7 +92,7 @@ function love.keypressed(k)
 end
 
 function add(a, b, coll)
-    if a == "ground" and b == "bug" then
+    if a == "platform" and b == "bug" then
         objects.bug.inGround = true
         debug:info('add ' .. a .. ' : ' .. b)
     end
@@ -102,7 +103,7 @@ function persist(a, b, coll)
 end
 
 function rem(a, b, coll)
-    if a == "ground" and b == "bug" then
+    if a == "platform" and b == "bug" then
         objects.bug.inGround = false
         debug:info('rem ' .. a .. ' : ' .. b)
     end
