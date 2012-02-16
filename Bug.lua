@@ -1,11 +1,12 @@
 require 'class'
 
 local M=class(function(self, world)
+    self.type = 'bug'
     self.balloons=1
     self.lifes=1
     self.body=love.physics.newBody(world, 640/2, 480/2, 15, 0)
     self.shape=love.physics.newCircleShape(self.body, 0, 0, 20)
-    self.shape:setData('bug')
+    self.shape:setData(self)
     self.sprite=nil
     self.points=0
     self.lastFlap=0

@@ -94,9 +94,9 @@ function love.keypressed(k)
 end
 
 function add(a, b, coll)
-    if a == "platform" and b == "bug" then
-        objects.bug.inGround = true
-        debug:info('add ' .. a .. ' : ' .. b)
+    if a:is_a(Platform) and b:is_a(Bug) then
+        b.inGround = true
+        debug:info('add collision ' .. a.type .. ' : ' .. b.type)
     end
 end
 
@@ -105,9 +105,9 @@ function persist(a, b, coll)
 end
 
 function rem(a, b, coll)
-    if a == "platform" and b == "bug" then
-        objects.bug.inGround = false
-        debug:info('rem ' .. a .. ' : ' .. b)
+    if a:is_a(Platform) and b:is_a(Bug) then
+        b.inGround = false
+        debug:info('rem collision ' .. a.type .. ' : ' .. b.type)
     end
 end
 
