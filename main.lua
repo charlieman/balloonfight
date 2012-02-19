@@ -26,8 +26,9 @@ function love.load()
     }
 
     objects.bug = Player(world)
-    objects.bug2 = Player(world)
-    objects.bug2.body:setX(640/3)
+    objects.bug.body:setX(20)
+--    objects.bug2 = Player(world)
+--    objects.bug2.body:setX(640/3)
     
     love.graphics.setBackgroundColor(104, 136, 248)
     --love.graphics.setMode(1024, 768, false, true, 0)
@@ -53,8 +54,9 @@ function love.draw()
     end
     
     objects.bug:draw()
-    objects.bug2:draw()
-    
+--    objects.bug2:draw()
+
+    love.graphics.setColor(0, 0, 0)
     love.graphics.print(string.format("fps: %s", love.timer.getFPS()), 0, 0)
     debug:draw()
 end

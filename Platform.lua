@@ -1,6 +1,6 @@
 require 'class'
 
-local M=class(function(self, world, x, y, w, h)
+local Platform=class(function(self, world, x, y, w, h)
     self.type = 'platform'
     x = x or 0
     y = y or 0
@@ -12,10 +12,10 @@ local M=class(function(self, world, x, y, w, h)
     self.sprite=nil
 end)
 
-function M:draw()
+function Platform:draw()
     love.graphics.setColor(72, 160, 14)
     love.graphics.polygon("fill", self.shape:getPoints())
 end
 
-return M
+return Platform
 
