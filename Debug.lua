@@ -22,6 +22,7 @@ function Debug:error(message)
 end
 
 function Debug:draw()
+    love.graphics.setColor(0, 0, 0)
     love.graphics.print(self.messages[self.level], 0, 15)
 end
 
