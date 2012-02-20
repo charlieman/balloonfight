@@ -20,20 +20,19 @@ function love.load()
     objects = {}
 
     objects.ground = {
-        Platform(world, 150, 560, 300, 60),
-        Platform(world, 1024-150, 550, 300, 60),
+        Platform(world, 150, 560, 300, 40),
+        Platform(world, 1024-150, 560, 300, 40),
         Platform(world, 512, 400, 300, 20),
     }
     objects.invisible_walls = {
         Platform(world, 612, -50, 1024, 100, false),
-        Platform(world, 1074, 300, 100, 600, false),
         Platform(world, 612, 650, 1024, 100, false),
-        Platform(world, -50, 300, 100, 600, false),
     }
 
     objects.bug = Player(world)
     objects.bug2 = Player(world)
     objects.bug2.body:setX(640/3)
+    objects.bugs = {objects.bug, objects.bug2}
     
     love.graphics.setBackgroundColor(104, 136, 248)
     --love.graphics.setMode(1024, 768, false, true, 0)
@@ -42,6 +41,15 @@ function love.load()
 end
 
 function love.update(dt)
+
+    for i, bug in pairs(objects.bugs) do
+        if bug.body:getX() < 0 then
+            bug.body:setX(1024)
+        elseif bug.body:getX() > 1024 then
+            bug.body:setX(0)
+        end
+    end
+
     world:update(dt)
 --    objects.bubble.body:applyForce(0,-15)
     if objects.bug.inGround then
@@ -62,8 +70,9 @@ function love.draw()
     --    g:draw()
     --end
     
-    objects.bug:draw()
-    objects.bug2:draw()
+    for i, g in pairs(objects.bugs) do
+        g:draw()
+    end
     
     love.graphics.print(string.format("fps: %s", love.timer.getFPS()), 0, 0)
     debug:draw()
@@ -104,8 +113,9 @@ function love.keypressed(k)
 end
 
 function add(a, b, coll)
+    debug:info(a.type .. ' started touching ' .. b.type)
     if a:is_a(Platform) and b:is_a(Bug) then
-        x, y = coll.getNormal(coll)
+        x, y = coll:getNormal()
         -- on top: x = 0, y = -200
         -- on right: x = 200, y = 0
         -- on left: x = -200, y = 0
@@ -127,7 +137,7 @@ end
 
 function rem(a, b, coll)
     if a:is_a(Platform) and b:is_a(Bug) then
-        x, y = coll.getNormal(coll)
+        x, y = coll:getNormal()
         if x == 0 then
             b.inGround = false
             debug:info('ball left ground')
