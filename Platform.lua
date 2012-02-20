@@ -1,6 +1,14 @@
 require 'class'
 
-local M=class(function(self, world, x, y, w, h)
+-- Platform
+--
+-- @world love.physics.world The World
+-- @x int x center position
+-- @y int y center position
+-- @w int width
+-- @h int height
+-- @visible bool visibility
+local M=class(function(self, world, x, y, w, h, visible)
     self.type = 'platform'
     x = x or 0
     y = y or 0
@@ -10,11 +18,14 @@ local M=class(function(self, world, x, y, w, h)
     self.shape = love.physics.newRectangleShape(self.body, 0, 0, w, h)
     self.shape:setData(self)
     self.sprite=nil
+    self.visible = visible ~= false --default is true
 end)
 
 function M:draw()
-    love.graphics.setColor(72, 160, 14)
-    love.graphics.polygon("fill", self.shape:getPoints())
+    if self.visible then
+        love.graphics.setColor(72, 160, 14)
+        love.graphics.polygon("fill", self.shape:getPoints())
+    end
 end
 
 return M
