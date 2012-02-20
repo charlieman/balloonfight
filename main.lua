@@ -1,5 +1,6 @@
 Debug = require 'Debug'
-Player = require 'Player'
+Bug = require 'Bug'
+--Player = require 'Player'
 Platform = require 'Platform'
 
 conf = {}
@@ -29,9 +30,9 @@ function love.load()
         Platform(world, 612, 650, 1024, 100, false),
     }
 
-    objects.bug = Player(world)
-    objects.bug.body:setX(20)
-    objects.bug2 = Player(world)
+    objects.bug = Bug(world)
+    ----objects.bug.body:setX(20)
+    objects.bug2 = Bug(world)
     objects.bug2.body:setX(640/3)
     objects.bugs = {objects.bug, objects.bug2}
     
@@ -45,6 +46,8 @@ function love.update(dt)
 
     for i, bug in pairs(objects.bugs) do
         local x = bug.body:getX()
+        -- bottom-left, top-left, top-right, bottom-right
+        --x1, y1, x2, y2, x3, y3, x4, y4 = bug.body:getBoundingBox()
         if x - bug.shape:getRadius() < 0 then
             bug:setShadow(1024)
         elseif x + bug.shape:getRadius() > 1024 then
@@ -135,7 +138,7 @@ function add(a, b, coll)
         if x == 0 then
             --todo instead of cheking x==0,
             --check the cotang of x/y and see if 135 > angle > 45
-            b.inGround = true
+            --b.inGround = true
             debug:info('ball in ground')
         elseif y == 0 then
             b.body:applyForce(x * 3, 0)
@@ -145,7 +148,10 @@ function add(a, b, coll)
 end
 
 function persist(a, b, coll)
-    
+    if a:is_a(Platform) and b:is_a(Bug) then
+        x, y = coll:getNormal()
+        b.inGround = x == 0
+    end
 end
 
 function rem(a, b, coll)

@@ -5,7 +5,8 @@ local Bug=class(function(self, world)
     self.balloons=1
     self.lifes=1
     self.body=love.physics.newBody(world, 640/2, 480/2, 15, 0)
-    self.shape=love.physics.newRectangleShape(self.body, 0, 0, 16, 24)
+    --self.shape=love.physics.newRectangleShape(self.body, 0, 0, 16, 24)
+    self.shape=love.physics.newCircleShape(self.body, 0, 0, 20)
     self.shape:setData(self)
     self.points=0
     self.lastFlap=0
