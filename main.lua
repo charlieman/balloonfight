@@ -47,10 +47,10 @@ function love.update(dt)
     for i, bug in pairs(objects.bugs) do
         local x = bug.body:getX()
         -- bottom-left, top-left, top-right, bottom-right
-        --x1, y1, x2, y2, x3, y3, x4, y4 = bug.body:getBoundingBox()
-        if x - bug.shape:getRadius() < 0 then
+        x1, y1, x2, y2, x3, y3, x4, y4 = bug.shape:getBoundingBox()
+        if x1 < 0 then
             bug:setShadow(1024)
-        elseif x + bug.shape:getRadius() > 1024 then
+        elseif x4 > 1024 then
             bug:setShadow(-1024)
         else
             bug:setShadow(0)
