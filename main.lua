@@ -1,6 +1,6 @@
 Debug = require 'Debug'
-Bug = require 'Bug'
---Player = require 'Player'
+--Bug = require 'Bug'
+Player = require 'Player'
 Platform = require 'Platform'
 
 conf = {}
@@ -30,9 +30,9 @@ function love.load()
         Platform(world, 612, 650, 1024, 100, false),
     }
 
-    objects.bug = Bug(world)
+    objects.bug = Player(world)
     ----objects.bug.body:setX(20)
-    objects.bug2 = Bug(world)
+    objects.bug2 = Player(world)
     objects.bug2.body:setX(640/3)
     objects.bugs = {objects.bug, objects.bug2}
     
@@ -73,6 +73,9 @@ function love.update(dt)
         elseif love.keyboard.isDown(controls.left) then
             objects.bug.body:applyForce(-objects.bug.groundVelocity, 0)
         end
+    end
+    if love.keyboard.isDown('x') then
+        flap()
     end
 end
 

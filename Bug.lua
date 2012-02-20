@@ -5,8 +5,8 @@ local Bug=class(function(self, world)
     self.balloons=1
     self.lifes=1
     self.body=love.physics.newBody(world, 640/2, 480/2, 15, 0)
-    --self.shape=love.physics.newRectangleShape(self.body, 0, 0, 16, 24)
-    self.shape=love.physics.newCircleShape(self.body, 0, 0, 20)
+    self.shape=love.physics.newRectangleShape(self.body, 0, 0, 16, 24)
+    --self.shape=love.physics.newCircleShape(self.body, 0, 0, 20)
     self.shape:setData(self)
     self.points=0
     self.lastFlap=0
@@ -30,22 +30,15 @@ end
 
 function Bug:draw()
     love.graphics.setColor(193, 47, 14)
-    love.graphics.circle(
-        "fill", 
-        self.body:getX(),
-        self.body:getY(),
-        self.shape:getRadius(),
-        20
-    )
+    love.graphics.polygon("fill", self.shape:getPoints())
 
     if self.shadow ~= 0 then
-        love.graphics.circle(
-            "fill", 
-            self.body:getX() + self.shadow,
-            self.body:getY(),
-            self.shape:getRadius(),
-            20
-        )
+        local x1, y1, x2, y2, x3, y3, x4, y4 = self.shape:getPoints()
+        x1 = x1 + self.shadow
+        x2 = x2 + self.shadow
+        x3 = x3 + self.shadow
+        x4 = x4 + self.shadow
+        love.graphics.polygon("fill",x1, y1, x2, y2, x3, y3, x4, y4)
     end
 end
 
