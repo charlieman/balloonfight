@@ -95,8 +95,17 @@ end
 
 function add(a, b, coll)
     if a:is_a(Platform) and b:is_a(Bug) then
-        b.inGround = true
-        debug:info('add collision ' .. a.type .. ' : ' .. b.type)
+        x, y = coll.getNormal(coll)
+        -- on top: x = 0, y = -200
+        -- on right: x = 200, y = 0
+        -- on left: x = -200, y = 0
+        if x == 0 then
+            b.inGround = true
+            debug:info('ball in ground')
+        elseif y == 0 then
+            b.body:applyForce(x * 3, 0)
+        end
+        debug:info(x .. ':' .. y)
     end
 end
 
@@ -106,11 +115,14 @@ end
 
 function rem(a, b, coll)
     if a:is_a(Platform) and b:is_a(Bug) then
-        b.inGround = false
-        debug:info('rem collision ' .. a.type .. ' : ' .. b.type)
+        x, y = coll.getNormal(coll)
+        if x == 0 then
+            b.inGround = false
+            debug:info('ball left ground')
+        end
     end
 end
 
 function result(a, b, coll)
-    
+    debug:info('result callback called')
 end
