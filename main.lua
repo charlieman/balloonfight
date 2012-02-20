@@ -12,7 +12,7 @@ controls.left = 'left'
 controls.right = 'right'
 
 function love.load()
-    world = love.physics.newWorld(0, 0, 1024, 600)
+    world = love.physics.newWorld(-100, -100, 1124, 700)
     world:setGravity(0, conf.gravity)
     world:setMeter(conf.meterScale) -- default
     world:setCallbacks(add, persist, rem, result)
@@ -23,6 +23,12 @@ function love.load()
         Platform(world, 150, 560, 300, 60),
         Platform(world, 1024-150, 550, 300, 60),
         Platform(world, 512, 400, 300, 20),
+    }
+    objects.invisible_walls = {
+        Platform(world, 612, -50, 1024, 100, false),
+        Platform(world, 1074, 300, 100, 600, false),
+        Platform(world, 612, 650, 1024, 100, false),
+        Platform(world, -50, 300, 100, 600, false),
     }
 
     objects.bug = Player(world)
@@ -51,6 +57,10 @@ function love.draw()
     for i, g in pairs(objects.ground) do
         g:draw()
     end
+    
+    --for i, g in pairs(objects.invisible_walls) do
+    --    g:draw()
+    --end
     
     objects.bug:draw()
     objects.bug2:draw()
@@ -100,6 +110,8 @@ function add(a, b, coll)
         -- on right: x = 200, y = 0
         -- on left: x = -200, y = 0
         if x == 0 then
+            --todo instead of cheking x==0,
+            --check the cotang of x/y and see if 135 > angle > 45
             b.inGround = true
             debug:info('ball in ground')
         elseif y == 0 then
