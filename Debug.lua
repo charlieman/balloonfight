@@ -26,6 +26,7 @@ end
 
 function Debug:draw()
     message = table.concat(self.messages[self.level], '\n')
+    love.graphics.setColor(0, 0, 0)
     love.graphics.print(message, 0, 15)
 end
 

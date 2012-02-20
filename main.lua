@@ -30,6 +30,7 @@ function love.load()
     }
 
     objects.bug = Player(world)
+    objects.bug.body:setX(20)
     objects.bug2 = Player(world)
     objects.bug2.body:setX(640/3)
     objects.bugs = {objects.bug, objects.bug2}
@@ -84,7 +85,8 @@ function love.draw()
     for i, g in pairs(objects.bugs) do
         g:draw()
     end
-    
+
+    love.graphics.setColor(0, 0, 0)
     love.graphics.print(string.format("fps: %s", love.timer.getFPS()), 0, 0)
     debug:draw()
 end

@@ -1,13 +1,12 @@
 require 'class'
 
-local M=class(function(self, world)
+local Bug=class(function(self, world)
     self.type = 'bug'
     self.balloons=1
     self.lifes=1
     self.body=love.physics.newBody(world, 640/2, 480/2, 15, 0)
-    self.shape=love.physics.newCircleShape(self.body, 0, 0, 20)
+    self.shape=love.physics.newRectangleShape(self.body, 0, 0, 16, 24)
     self.shape:setData(self)
-    self.sprite=nil
     self.points=0
     self.lastFlap=0
     self.groundVelocity = 30
@@ -24,11 +23,11 @@ end)
 -- where should we draw the copy of the bug, set to 0 to disable
 --
 -- @position int distance in x from the Bug
-function M:setShadow(position)
+function Bug:setShadow(position)
     self.shadow = position
 end
 
-function M:draw()
+function Bug:draw()
     love.graphics.setColor(193, 47, 14)
     love.graphics.circle(
         "fill", 
@@ -49,5 +48,5 @@ function M:draw()
     end
 end
 
-return M
+return Bug
 

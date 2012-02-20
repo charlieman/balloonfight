@@ -8,7 +8,7 @@ require 'class'
 -- @w int width
 -- @h int height
 -- @visible bool visibility
-local M=class(function(self, world, x, y, w, h, visible)
+local Platform=class(function(self, world, x, y, w, h, visible)
     self.type = 'platform'
     x = x or 0
     y = y or 0
@@ -21,12 +21,12 @@ local M=class(function(self, world, x, y, w, h, visible)
     self.visible = visible ~= false --default is true
 end)
 
-function M:draw()
+function Platform:draw()
     if self.visible then
         love.graphics.setColor(72, 160, 14)
         love.graphics.polygon("fill", self.shape:getPoints())
     end
 end
 
-return M
+return Platform
 
