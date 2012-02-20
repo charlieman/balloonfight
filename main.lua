@@ -43,10 +43,21 @@ end
 function love.update(dt)
 
     for i, bug in pairs(objects.bugs) do
-        if bug.body:getX() < 0 then
+        local x = bug.body:getX()
+        if x - bug.shape:getRadius() < 0 then
+            bug:setShadow(1024)
+        elseif x + bug.shape:getRadius() > 1024 then
+            bug:setShadow(-1024)
+        else
+            bug:setShadow(0)
+        end
+
+        if x < 0 then
             bug.body:setX(1024)
-        elseif bug.body:getX() > 1024 then
+            bug:setShadow(-1024)
+        elseif x > 1024 then
             bug.body:setX(0)
+            bug:setShadow(1024)
         end
     end
 

@@ -17,7 +17,16 @@ local M=class(function(self, world)
     self.upForce[0.1] = -200
     self.upForce[0.4] = -500
     self.upForce[0.7] = -700
+    self.shadow = 0
 end)
+
+-- setShadow
+-- where should we draw the copy of the bug, set to 0 to disable
+--
+-- @position int distance in x from the Bug
+function M:setShadow(position)
+    self.shadow = position
+end
 
 function M:draw()
     love.graphics.setColor(193, 47, 14)
@@ -28,6 +37,16 @@ function M:draw()
         self.shape:getRadius(),
         20
     )
+
+    if self.shadow ~= 0 then
+        love.graphics.circle(
+            "fill", 
+            self.body:getX() + self.shadow,
+            self.body:getY(),
+            self.shape:getRadius(),
+            20
+        )
+    end
 end
 
 return M
