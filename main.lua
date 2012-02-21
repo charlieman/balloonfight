@@ -34,6 +34,7 @@ function love.load()
     objects.bug = Player(world)
     ----objects.bug.body:setX(20)
     objects.bug2 = Player(world)
+    objects.bug2.autoflapTime = 0.9
     objects.bug2.body:setX(640/3)
     objects.bugs = {objects.bug, objects.bug2}
     
@@ -75,9 +76,12 @@ function love.update(dt)
             objects.bug.body:applyForce(-objects.bug.groundVelocity, 0)
         end
     end
+
     if love.keyboard.isDown(controls.autoflap) then
         objects.bug:autoflap()
     end
+
+    objects.bug2:autoflap()
 end
 
 function love.draw()

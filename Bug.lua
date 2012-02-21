@@ -47,6 +47,8 @@ end
 
 function Bug:_flap(upForce)
     local sideForce = 0
+    --TODO: shouldn't use the global controls since it makes
+    --the other bug move as well
     if love.keyboard.isDown(controls.right) then
         sideForce = self.sideForce
     elseif love.keyboard.isDown(controls.left) then
