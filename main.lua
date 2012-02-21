@@ -1,5 +1,5 @@
 Debug = require 'Debug'
---Bug = require 'Bug'
+Bug = require 'Bug'
 Player = require 'Player'
 Platform = require 'Platform'
 
@@ -9,6 +9,7 @@ conf.meterScale = 200 -- 30 pixels = 1 meter
 
 controls = {}
 controls.flap = 'z'
+controls.autoflap = 'x'
 controls.left = 'left'
 controls.right = 'right'
 
@@ -26,8 +27,8 @@ function love.load()
         Platform(world, 512, 400, 300, 20),
     }
     objects.invisible_walls = {
-        Platform(world, 612, -50, 1024, 100, false),
-        Platform(world, 612, 650, 1024, 100, false),
+        Platform(world, 512, -50, 1024, 100, false),
+        Platform(world, 512, 650, 1024, 100, false),
     }
 
     objects.bug = Player(world)
@@ -47,7 +48,7 @@ function love.update(dt)
     for i, bug in pairs(objects.bugs) do
         local x = bug.body:getX()
         -- bottom-left, top-left, top-right, bottom-right
-        x1, y1, x2, y2, x3, y3, x4, y4 = bug.shape:getBoundingBox()
+        local x1, y1, x2, y2, x3, y3, x4, y4 = bug.shape:getBoundingBox()
         if x1 < 0 then
             bug:setShadow(1024)
         elseif x4 > 1024 then
@@ -74,8 +75,8 @@ function love.update(dt)
             objects.bug.body:applyForce(-objects.bug.groundVelocity, 0)
         end
     end
-    if love.keyboard.isDown('x') then
-        flap()
+    if love.keyboard.isDown(controls.autoflap) then
+        objects.bug:autoflap()
     end
 end
 
@@ -97,36 +98,11 @@ function love.draw()
     debug:draw()
 end
 
-function flap()
-    local time = love.timer.getTime()
-    elapsedTime = time - objects.bug.lastFlap
-
-    local upForce = 0
-    for keyTime, force in pairs(objects.bug.upForce) do
-        if elapsedTime > keyTime then
-            upForce = force
-        else
-            break
-        end
-    end
-
-    if upForce ~= 0 then
-        if love.keyboard.isDown(controls.right) then
-            objects.bug.body:applyForce(objects.bug.sideForce, 0)
-        elseif love.keyboard.isDown(controls.left) then
-            objects.bug.body:applyForce(-objects.bug.sideForce, 0)
-        end
-
-        objects.bug.body:applyForce(0, upForce)
-        objects.bug.lastFlap = time
-    end
-end
-
 function love.keypressed(k)
     if k=='escape' or k=='q' then
         love.event.push('q')
     elseif k == controls.flap then
-        flap()
+        objects.bug:flap()
     end
   --if k=='d' then DEBUG=not DEBUG end
 end
